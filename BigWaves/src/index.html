@@ -1,117 +1,613 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BigWaves</title>
-  <link rel="stylesheet" href="/BigWaves/src/style.css" />
-</head>
-<body>
-  <header>
-    <div class="logo"><img src="/BigWaves/src/img/logo.png" alt="logo"></div>
-    <h1>Casa do Microondas</h1>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Casa do Micro-ondas</title>
 
-  <section class="carrosselMarcas">
+    <!-- =====================================================
+       BOOTSTRAP 5 (via CDN)
+  ===================================================== -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
 
-    <div class="marcas">
-      <div class="marca active">Brastemp</div>
-      <div class="marca">Electrolux</div>
-      <div class="marca">LG</div>
-      <div class="marca">Samsung</div>
-      <div class="marca">Consul</div>
-      <div class="marca">Philco</div>
-      <div class="marca">Panasonic</div>
+    <!-- =====================================================
+       FONTES e ÍCONES
+  ===================================================== -->
+    <!-- Google Font “Inter” -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Lucide Icons (SVG font) -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/lucide-static@latest/font/lucide.css"
+    />
+
+    <style>
+      /* -----------------------------------------------------
+       1. Variáveis de cor
+    ----------------------------------------------------- */
+      :root {
+        --blue: #0f4c81;
+        --green: #25d366;
+        --orange: #ff6f21;
+        --gray: #f5f5f5;
+        --text: #333;
+      }
+
+      /* -----------------------------------------------------
+       2. Reset/CSS básico
+    ----------------------------------------------------- */
+      * {
+        /* margem de scroll automático para âncoras */
+        scroll-margin-top: 4rem;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        overflow: hidden; /* o contêiner .snap-y fará o scroll */
+      }
+      a {
+        text-decoration: none;
+      }
+
+      /* -----------------------------------------------------
+       3. Scroll-snap vertical
+       - .snap-y: contêiner que dá scroll
+       - .snap: cada seção “encaixa” quando rolamos
+    ----------------------------------------------------- */
+      .snap-y {
+        height: 100vh;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+      }
+      .snap {
+        scroll-snap-align: start;
+        min-height: 90vh; /* ocupa quase toda a tela */
+        padding: 3rem 1rem;
+      }
+
+      /* -----------------------------------------------------
+       4. Hero (primeira seção)
+    ----------------------------------------------------- */
+      .hero {
+        background: linear-gradient(120deg, var(--blue), #1b6daa);
+        color: #fff;
+        text-align: center;
+      }
+      .hero .arrow-bounce {
+        animation: bounce 1.4s infinite;
+      }
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(8px);
+        }
+        60% {
+          transform: translateY(4px);
+        }
+      }
+
+      /* -----------------------------------------------------
+       5. Carrossel de Marcas (logotipos) 
+       - Faz “loop” infinito
+    ----------------------------------------------------- */
+      .brand-track {
+        display: flex;
+        gap: 3rem;
+        animation: scroll-left 22s linear infinite;
+      }
+      .brand-track img {
+        height: 48px;
+        filter: grayscale(1) brightness(0.8);
+        transition: filter 0.3s;
+      }
+      .brand-track img:hover {
+        filter: none;
+      }
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* -----------------------------------------------------
+       6. Cards de Serviços
+    ----------------------------------------------------- */
+      .service-card img {
+        object-fit: cover;
+        border-radius: 0.5rem;
+      }
+
+      /* -----------------------------------------------------
+       7. Mapas (iframe)
+    ----------------------------------------------------- */
+      .map-frame {
+        border: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* -----------------------------------------------------
+       8. Flash de destaque no contato
+    ----------------------------------------------------- */
+      .flash-focus {
+        animation: flash 0.8s ease-in-out 2;
+      }
+      @keyframes flash {
+        0%,
+        100% {
+          background: transparent;
+        }
+        50% {
+          background: rgba(255, 255, 0, 0.25);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="snap-y">
+      <!-- ============================
+         HERO
+         ============================ -->
+      <section
+        class="snap hero d-flex flex-column justify-content-center align-items-center"
+      >
+        <h1 class="display-5 fw-bold">Seu micro-ondas quebrou?</h1>
+        <p class="lead mb-4">Conserto rápido, peças originais e garantia.</p>
+        <a
+          href="#contato-sec"
+          class="btn btn-success btn-lg d-inline-flex align-items-center gap-2"
+        >
+          Solicitar Orçamento
+          <i class="lucide lucide-arrow-down-circle arrow-bounce"></i>
+        </a>
+      </section>
+
+      <!-- ============================
+         CARROSSEL DE MARCAS
+         ============================ -->
+      <section
+        class="snap bg-white d-flex align-items-center justify-content-center"
+      >
+        <div class="brand-track">
+          <img src="logos/brastemp.png" alt="Brastemp" />
+          <img src="logos/lg.png" alt="LG" />
+          <img src="logos/electrolux.png" alt="Electrolux" />
+          <img src="logos/panasonic.png" alt="Panasonic" />
+          <img src="logos/philco.png" alt="Philco" />
+          <!-- duplicados para loop infinito -->
+          <img src="logos/brastemp.png" alt="Brastemp" />
+          <img src="logos/lg.png" alt="LG" />
+          <img src="logos/electrolux.png" alt="Electrolux" />
+          <img src="logos/panasonic.png" alt="Panasonic" />
+          <img src="logos/philco.png" alt="Philco" />
+        </div>
+      </section>
+
+      <!-- ============================
+         SERVIÇOS
+         ============================ -->
+      <section class="snap bg-light">
+        <div class="container">
+          <h2 class="text-center mb-5">Nossos Serviços</h2>
+          <div class="row gy-4">
+            <div class="col-md-6">
+              <div
+                class="service-card p-3 bg-white shadow-sm h-100 d-flex flex-column flex-md-row"
+              >
+                <img
+                  src="microondas.jpg"
+                  class="w-100 w-md-50 me-md-3 mb-3 mb-md-0"
+                  alt="Micro-ondas"
+                />
+                <div>
+                  <h3 class="h5">Conserto de Micro-ondas</h3>
+                  <p>
+                    Diagnóstico na hora, técnicos certificados, garantia 90
+                    dias.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="service-card p-3 bg-white shadow-sm h-100 d-flex flex-column flex-md-row"
+              >
+                <img
+                  src="forno.jpg"
+                  class="w-100 w-md-50 me-md-3 mb-3 mb-md-0"
+                  alt="Forno elétrico"
+                />
+                <div>
+                  <h3 class="h5">Conserto de Forno Elétrico</h3>
+                  <p>Peças originais e atendimento especializado.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================
+         LOCALIZAÇÃO + AVALIAÇÕES (3 FILIAIS)
+         ==================================== -->
+      <section class="snap bg-white">
+        <div class="container py-5">
+          <h2 class="text-center mb-4">Encontre a Loja Mais Próxima</h2>
+          <ul class="nav nav-pills justify-content-center mb-4" role="tablist">
+            <li class="nav-item">
+              <button
+                class="nav-link active"
+                data-bs-toggle="pill"
+                data-bs-target="#reb"
+              >
+                Rebouças
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#santa"
+              >
+                Santa Felicidade
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                class="nav-link"
+                data-bs-toggle="pill"
+                data-bs-target="#sjp"
+              >
+                São José dos Pinhais
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- FILIAL REBOÚCAS -->
+            <div class="tab-pane fade show active" id="reb">
+              <div class="ratio ratio-16x9 rounded shadow mb-3">
+                <iframe
+                  class="map-frame"
+                  src="https://www.google.com/maps?q=Av.+Presidente+Kennedy+410,Curitiba&output=embed"
+                  allowfullscreen
+                  loading="lazy"
+                >
+                </iframe>
+              </div>
+              <p class="text-center fw-semibold mb-1">
+                Av. Presidente Kennedy 410 – Rebouças – Curitiba-PR
+              </p>
+              <p class="text-center small">(41) 3332-8000 • Opção 1</p>
+              <div class="text-center mb-3">
+                <a
+                  href="https://goo.gl/maps/1gqWizY6o6vkLwXa8"
+                  target="_blank"
+                  class="btn btn-outline-secondary btn-sm"
+                >
+                  ⭐ Ver avaliações
+                </a>
+              </div>
+            </div>
+
+            <!-- FILIAL SANTA FELICIDADE -->
+            <div class="tab-pane fade" id="santa">
+              <div class="ratio ratio-16x9 rounded shadow mb-3">
+                <iframe
+                  class="map-frame"
+                  src="https://www.google.com/maps?q=Rua+Saturnino+Miranda+84,Curitiba&output=embed"
+                  allowfullscreen
+                  loading="lazy"
+                >
+                </iframe>
+              </div>
+              <p class="text-center fw-semibold mb-1">
+                Rua Saturnino Miranda 84 – Santa Felicidade – Curitiba-PR
+              </p>
+              <p class="text-center small">(41) 3332-8000 • Opção 2</p>
+              <div class="text-center mb-3">
+                <a
+                  href="https://goo.gl/maps/e2kLTT4vqYWt4kEr8"
+                  target="_blank"
+                  class="btn btn-outline-secondary btn-sm"
+                >
+                  ⭐ Ver avaliações
+                </a>
+              </div>
+            </div>
+
+            <!-- FILIAL SÃO JOSÉ DOS PINHAIS -->
+            <div class="tab-pane fade" id="sjp">
+              <div class="ratio ratio-16x9 rounded shadow mb-3">
+                <iframe
+                  class="map-frame"
+                  src="https://www.google.com/maps?q=Av.+Rui+Barbosa+8706,São+José+dos+Pinhais&output=embed"
+                  allowfullscreen
+                  loading="lazy"
+                >
+                </iframe>
+              </div>
+              <p class="text-center fw-semibold mb-1">
+                Av. Rui Barbosa 8706 – São José dos Pinhais-PR
+              </p>
+              <p class="text-center small">(41) 3332-8000 • Opção 3</p>
+              <div class="text-center mb-3">
+                <a
+                  href="https://goo.gl/maps/bYBv7s4mZt8Ph7EQA"
+                  target="_blank"
+                  class="btn btn-outline-secondary btn-sm"
+                >
+                  ⭐ Ver avaliações
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================
+         PLUS 30 MIN
+         ============================ -->
+      <section
+        class="snap text-center text-white"
+        style="background: var(--orange)"
+      >
+        <div class="container py-5">
+          <h2 class="display-6 fw-bold">Conserto em até 30 min</h2>
+          <p class="lead mb-4">
+            Trazendo o aparelho à loja da Av. Presidente Kennedy.
+          </p>
+          <a href="#contato-sec" class="btn btn-light btn-lg"
+            >Quero agendar agora</a
+          >
+        </div>
+      </section>
+
+      <!-- ============================
+         CONTATO
+         ============================ -->
+      <section
+        id="contato-sec"
+        class="snap bg-light d-flex flex-column justify-content-center"
+      >
+        <div class="container text-center">
+          <h2 class="mb-4">Fale Conosco</h2>
+          <p class="lead">
+            Telefone <strong>(41) 3332-8000</strong><br />
+            Seg-Sáb • 08h-21h
+          </p>
+          <div
+            class="d-flex justify-content-center gap-3 flex-column flex-sm-row mt-4"
+          >
+            <!-- abre modal do WhatsApp -->
+            <button
+              class="btn btn-success btn-lg px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#whatsModal"
+            >
+              <i class="lucide lucide-phone"></i> WhatsApp
+            </button>
+            <!-- abre modal do E-mail -->
+            <button
+              class="btn btn-primary btn-lg px-4"
+              data-bs-toggle="modal"
+              data-bs-target="#emailModal"
+            >
+              <i class="lucide lucide-mail"></i> E-mail
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- /snap-y -->
+
+    <!-- ====================================
+       MODAL DE CONTATO POR E-MAIL
+       → Envia para Formspree via AJAX
+       ==================================== -->
+    <div class="modal fade" id="emailModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Contato por E-mail</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              action="https://formspree.io/f/mvgrpaed"
+              method="POST"
+              class="text-start"
+              id="ajaxForm"
+            >
+              <!-- Nome (obrigatório preenchimento) -->
+              <div class="mb-3">
+                <label class="form-label">Nome</label>
+                <input name="nome" type="text" class="form-control" required />
+              </div>
+
+              <!-- E-mail (obrigatório para Formspree enviar a resposta) -->
+              <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input
+                  name="email"
+                  type="email"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <!-- Telefone (opcional) -->
+              <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                <input name="telefone" type="tel" class="form-control" />
+              </div>
+
+              <!-- Mensagem -->
+              <div class="mb-3">
+                <label class="form-label">Mensagem</label>
+                <textarea
+                  name="message"
+                  class="form-control"
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+
+              <!-- Botão de Enviar -->
+              <button type="submit" class="btn btn-primary w-100">
+                Enviar
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <!-- Se o usuário preferir Whats, abre o outro modal -->
+            <button
+              class="btn btn-outline-success w-100"
+              data-bs-target="#whatsModal"
+              data-bs-toggle="modal"
+            >
+              Prefere WhatsApp?
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <button class="prevMarcas">&#10094;</button>
-    <button class="nextMarcas">&#10095;</button>
-  </section>  
-
-
-
-
-  <section class="servicos">
-    <h1>SERVICOS</h1>
-        <div class="grid">
-        
-          <div class="item">
-        <div class="imagem-placeholder"></div>
-        <div class="descricao">
-          <p>Descricao do servico 1</p>
+    <!-- ====================================
+       MODAL DE WHATSAPP
+       → Link “Abrir WhatsApp” com mensagem pré-preenchida
+       ==================================== -->
+    <div class="modal fade" id="whatsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center">
+          <div class="modal-header border-0">
+            <h5 class="modal-title w-100">WhatsApp</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Atendimento rápido via mensagem.</p>
+            <a
+              href="https://wa.me/554133328000?text=Olá%2C+gostaria+de+um+orçamento+para+meu+micro-ondas"
+              target="_blank"
+              class="btn btn-success w-100 mb-3"
+            >
+              Abrir WhatsApp
+            </a>
+          </div>
+          <div class="modal-footer border-0">
+            <!-- Se o usuário quiser voltar para “E-mail” -->
+            <button
+              class="btn btn-outline-primary w-100"
+              data-bs-target="#emailModal"
+              data-bs-toggle="modal"
+            >
+              Prefere E-mail?
+            </button>
+          </div>
         </div>
-        </div>
-
-        <div class="item">
-        <div class="imagem-placeholder"></div>
-        <div class="descricao">
-          <p>Descricao do servico 2</p>
-        </div>
-        </div>
-
-        <div class="item">
-        <div class="imagem-placeholder"></div>
-          <div class="descricao">
-          <p>Descricao do servico 3</p>
-        </div>
-        </div>
-
-        <div class="item">
-        <div class="imagem-placeholder"></div> 
-        <div class="descricao">
-          <p>Descricao do servico 4</p>
-        </div>
-        </div>
-
-     </div>
-  </section>
-
-
-
-  <section class="carrosselAvaliacoes">
-
-    <div class="avaliacoes">
-      <div class="avaliacao">gostei bastante</div>
-      <div class="avaliacao">nunca mais volto</div>
-      <div class="avaliacao">da pro gasto</div>
-      <div class="avaliacao">horrivel</div>
-      <div class="avaliacao">bom</div>
+      </div>
     </div>
 
-    <button class="prevAvaliacoes">&#10094;</button>
-    <button class="nextAvaliacoes">&#10095;</button>
-  </section>  
+    <!-- ====================================
+       9. SCRIPT JAVASCRIPT
+       – Scroll suave + Flash na área de contato
+       – Envio AJAX do formulário via Formspree
+       – Pausar animação de bounce quando chegar em “Contato”
+       ==================================== -->
+    <script>
+      /* ---------------------------------------------
+       Scroll suave + flash na seção de contato
+    --------------------------------------------- */
+      document.querySelectorAll('a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", (e) => {
+          const alvo = document.querySelector(link.getAttribute("href"));
+          if (alvo) {
+            e.preventDefault();
+            alvo.scrollIntoView({ behavior: "smooth" });
+            alvo.classList.add("flash-focus");
+            setTimeout(() => alvo.classList.remove("flash-focus"), 1600);
+          }
+        });
+      });
 
-  <section class="contato">
-    <div class="whatsapp">
-      <h2>Contato</h2>
-      <p><strong>Compre pelo WhatsApp</strong><br />
-      Faça seu pedido através do nosso WhatsApp.<br />
-      <span class="numero">(00) 0000-0000</span></p>
-        </div>
-            
-    <div class="formulario">
-      <h1>Formulário</h1>
-      <form>
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" required />
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
-      <label for="mensagem">Mensagem:</label>
-      <textarea id="mensagem" name="mensagem" rows="4" required></textarea>
-      <button type="submit">Enviar</button>
-      </form>
-    </div>
-  </section>       
-    </div>
-  </section>
+      /* ---------------------------------------------
+       Envio do formulário por AJAX (Formspree)
+    --------------------------------------------- */
+      document
+        .getElementById("ajaxForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault(); // evita recarregar
 
-  <footer>
-    <p>LOCALIZACAO</p>
-    <div class="icone-localizacao"><img src="/BigWaves/src/img/logo.png" alt="logo"></div>
-    <div class="info-extra">
-    </div>
-  </footer>
-  <script src="/BigWaves/src/function.js"></script>
-</body>
+          const form = e.target;
+          const dados = new FormData(form);
+
+          try {
+            const resposta = await fetch(form.action, {
+              method: "POST",
+              body: dados,
+              headers: { Accept: "application/json" },
+            });
+
+            if (resposta.ok) {
+              // se sucesso, limpa campos e mostra “cartão de sucesso”
+              form.reset();
+              form.innerHTML = `
+            <div class="text-center py-3">
+              <i class="lucide lucide-check-circle" style="font-size:48px;color:#25D366"></i>
+              <h5 class="mt-2">Mensagem enviada!</h5>
+              <p class="small">Em breve entraremos em contato.</p>
+              <button class="btn btn-outline-secondary mt-2" data-bs-dismiss="modal">Fechar</button>
+            </div>
+          `;
+              return;
+            }
+            alert("Erro ao enviar. Tente novamente.");
+          } catch (error) {
+            alert("Falha de rede. Tente mais tarde.");
+          }
+        });
+
+      /* ---------------------------------------------
+       Pausar o bounce quando a seção “Contato” entra em vista
+    --------------------------------------------- */
+      new IntersectionObserver(
+        (entries) => {
+          const icon = document.querySelector(".arrow-bounce");
+          icon.style.animationPlayState = entries[0].isIntersecting
+            ? "paused"
+            : "running";
+        },
+        { threshold: 0.5 }
+      ).observe(document.getElementById("contato-sec"));
+    </script>
+  </body>
 </html>
